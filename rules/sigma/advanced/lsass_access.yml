@@ -1,0 +1,23 @@
+title: Suspicious LSASS process access
+id: lsass_suspicious_access
+status: test
+description: Detects process access to LSASS with known credential-access rights.
+level: high
+logsource:
+  product: windows
+  category: process_access
+detection:
+  selection:
+    EventID: "10"
+    TargetImage|endswith: '\lsass.exe'
+    GrantedAccess|contains:
+      - "0x1010"
+      - "0x1410"
+      - "0x1438"
+  filter_system:
+    SourceImage|startswith: 'C:\Windows\System32\'
+  condition: selection and not filter_system
+tags:
+  - attack.credential_access
+  - attack.t1003.001
+version: "1.0.0"

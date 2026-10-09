@@ -1,0 +1,28 @@
+key: negative_control_benign_process
+name: Benign process launch (negative control)
+description: Verify the detection rules do not match an unrelated benign event fixture.
+category: process
+attck_technique: T1059
+attck_tactic: Execution
+severity: low
+expected_rule_key: null
+expected_alert_type: none
+is_negative_control: true
+tags:
+  - negative_control
+  - process
+event_fixture: negative_control.json
+event_template:
+  EventID: "1"
+  Channel: Microsoft-Windows-Sysmon/Operational
+  Image: 'C:\Windows\System32\notepad.exe'
+  ParentImage: 'C:\Windows\explorer.exe'
+  CommandLine: notepad.exe
+  User: 'LAB\benign_user'
+  UtcTime: '{{ timestamp }}'
+event_count: 1
+latency_window_seconds: 30
+prerequisites: []
+metadata_json:
+  approved: true
+  safe: true

@@ -1,0 +1,8 @@
+{
+  "alerts": [
+    {"scenario_id": "process-event", "expected_rule_id": "proc-creation-suspicious"},
+    {"scenario_id": "network-event", "expected_rule_id": "network-connection-suspicious"},
+    {"scenario_id": "registry-event", "expected_rule_id": "registry-persistence"},
+    {"scenario_id": "negative-control", "expected_rule_id": null}
+  ]
+}

@@ -1,0 +1,29 @@
+key: process_event_unusual_parent
+name: Unusual process launch with suspicious parent
+description: Validate process-creation detection against a fixed inert fixture.
+category: process
+attck_technique: T1059
+attck_tactic: Execution
+severity: medium
+expected_rule_key: proc_creation_suspicious
+expected_alert_type: sigma
+is_negative_control: false
+tags:
+  - process
+  - execution
+  - t1059
+event_fixture: process_event.json
+event_template:
+  EventID: "1"
+  Channel: Microsoft-Windows-Sysmon/Operational
+  Image: 'C:\Windows\System32\cmd.exe'
+  ParentImage: 'C:\Program Files\PurpleLab\fixture_parent.exe'
+  CommandLine: 'cmd.exe /c echo PurpleLab harmless fixture {{ correlation_id }}'
+  User: 'LAB\purplelab_test'
+  UtcTime: '{{ timestamp }}'
+event_count: 1
+latency_window_seconds: 30
+prerequisites: []
+metadata_json:
+  approved: true
+  safe: true

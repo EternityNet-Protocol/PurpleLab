@@ -1,0 +1,30 @@
+key: network_event_susp_port
+name: Network connection to uncommon external port
+description: Validate network detection using a documentation-only address fixture.
+category: network
+attck_technique: T1071
+attck_tactic: Command and Control
+severity: medium
+expected_rule_key: network_susp_port
+expected_alert_type: sigma
+is_negative_control: false
+tags:
+  - network
+  - c2
+event_fixture: network_event.json
+event_template:
+  EventID: "3"
+  Channel: Microsoft-Windows-Sysmon/Operational
+  Image: 'C:\Windows\System32\curl.exe'
+  DestinationIp: 192.0.2.55
+  DestinationPort: "4444"
+  Protocol: tcp
+  Initiated: "true"
+  User: 'LAB\purplelab_test'
+  UtcTime: '{{ timestamp }}'
+event_count: 1
+latency_window_seconds: 30
+prerequisites: []
+metadata_json:
+  approved: true
+  safe: true

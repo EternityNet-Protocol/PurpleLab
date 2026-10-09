@@ -1,0 +1,57 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: purplelab
+      POSTGRES_PASSWORD: purplelab
+      POSTGRES_DB: purplelab
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U purplelab -d purplelab"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      PURPLELAB_DATABASE_URL: postgresql+asyncpg://purplelab:purplelab@db:5432/purplelab
+      PURPLELAB_FIXTURE_PATH: /app/fixtures
+      PURPLELAB_SCENARIOS_DIR: /app/scenarios
+      PURPLELAB_RULES_DIR: /app/rules/sigma
+      PURPLELAB_DEBUG: "false"
+      PURPLELAB_DEFAULT_COLLECTOR: ${PURPLELAB_DEFAULT_COLLECTOR:-fixture}
+      PURPLELAB_ELASTIC_ENDPOINT: ${PURPLELAB_ELASTIC_ENDPOINT:-}
+      PURPLELAB_ELASTIC_API_KEY: ${PURPLELAB_ELASTIC_API_KEY:-}
+      PURPLELAB_SPLUNK_ENDPOINT: ${PURPLELAB_SPLUNK_ENDPOINT:-}
+      PURPLELAB_SPLUNK_TOKEN: ${PURPLELAB_SPLUNK_TOKEN:-}
+      PURPLELAB_SENTINEL_WORKSPACE_ID: ${PURPLELAB_SENTINEL_WORKSPACE_ID:-}
+      PURPLELAB_SENTINEL_TOKEN: ${PURPLELAB_SENTINEL_TOKEN:-}
+      PURPLELAB_SYSMON_EVTX_PATH: ${PURPLELAB_SYSMON_EVTX_PATH:-}
+      PURPLELAB_ZEEK_LOG_DIR: ${PURPLELAB_ZEEK_LOG_DIR:-}
+      PURPLELAB_SURICATA_EVE_PATH: ${PURPLELAB_SURICATA_EVE_PATH:-}
+    volumes:
+      - ./scenarios:/app/scenarios:ro
+      - ./rules:/app/rules:ro
+      - ./fixtures:/app/fixtures
+      - ./logs:/app/logs:ro
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

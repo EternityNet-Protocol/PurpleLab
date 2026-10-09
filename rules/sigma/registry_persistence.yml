@@ -1,0 +1,16 @@
+title: Registry Run key persistence
+id: registry_persistence
+status: test
+description: Detects a static registry event under a Run key.
+level: high
+logsource:
+  product: windows
+  category: registry_set
+detection:
+  selection:
+    EventID: "13"
+    EventType: SetValue
+    TargetObject|contains: '\CurrentVersion\Run\'
+  condition: selection
+tags: [attack.persistence, attack.t1547.001]
+version: "1.0.0"

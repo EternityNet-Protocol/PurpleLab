@@ -1,0 +1,16 @@
+title: Suspicious process launch from unexpected parent
+id: proc_creation_suspicious
+status: test
+description: Detects a command interpreter launched by a PurpleLab-tagged parent process.
+level: medium
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection:
+    EventID: "1"
+    Image|endswith: '\cmd.exe'
+    ParentImage|contains: PurpleLab
+  condition: selection
+tags: [attack.execution, attack.t1059]
+version: "1.0.0"

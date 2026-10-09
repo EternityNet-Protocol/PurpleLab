@@ -1,0 +1,29 @@
+key: registry_persistence_run_key
+name: Registry Run key persistence
+description: Validate registry event detection against a static fixture; no registry writes occur.
+category: registry
+attck_technique: T1547.001
+attck_tactic: Persistence
+severity: high
+expected_rule_key: registry_persistence
+expected_alert_type: sigma
+is_negative_control: false
+tags:
+  - registry
+  - persistence
+event_fixture: registry_event.json
+event_template:
+  EventID: "13"
+  Channel: Microsoft-Windows-Sysmon/Operational
+  EventType: SetValue
+  TargetObject: 'HKLM\Software\Microsoft\Windows\CurrentVersion\Run\PurpleLabTest'
+  Details: 'C:\Users\Public\purplelab_{{ correlation_id }}.exe'
+  Image: 'C:\Windows\System32\reg.exe'
+  User: 'LAB\purplelab_test'
+  UtcTime: '{{ timestamp }}'
+event_count: 1
+latency_window_seconds: 30
+prerequisites: []
+metadata_json:
+  approved: true
+  safe: true

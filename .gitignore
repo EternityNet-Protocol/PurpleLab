@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.db
+.pytest_cache/
+.venv/
+.venv-*/
+*.egg-info/
+node_modules/
+frontend/dist/
+fixtures/events/*.jsonl
+fixtures/alerts/*.jsonl
+.env

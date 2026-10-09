@@ -1,0 +1,15 @@
+title: Network connection to uncommon external port
+id: network_susp_port
+status: test
+description: Detects a connection to a reserved test address on an uncommon port.
+level: medium
+logsource:
+  product: windows
+  category: network_connection
+detection:
+  selection:
+    EventID: "3"
+    DestinationPort: "4444"
+  condition: selection
+tags: [attack.command_and_control, attack.t1071]
+version: "1.0.0"

@@ -1,0 +1,22 @@
+title: Suspicious DNS query to uncommon TLD
+id: suspicious_dns_query
+status: test
+description: Detects DNS queries to uncommon top-level domains for analyst review.
+level: medium
+logsource:
+  product: zeek
+  category: dns
+detection:
+  selection:
+    query|endswith:
+      - ".top"
+      - ".xyz"
+      - ".club"
+      - ".work"
+  filter_internal:
+    query|endswith: ".internal"
+  condition: selection and not filter_internal
+tags:
+  - attack.command_and_control
+  - attack.t1071.004
+version: "1.0.0"

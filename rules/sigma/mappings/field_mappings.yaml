@@ -1,0 +1,46 @@
+mappings:
+  process.name:
+    sysmon: Image
+    windows_security: NewProcessName
+    elastic: process.name
+    splunk: Image
+  process.command_line:
+    sysmon: CommandLine
+    windows_security: CommandLine
+    elastic: process.command_line
+    splunk: CommandLine
+  process.pid:
+    sysmon: ProcessId
+    windows_security: NewProcessId
+    elastic: process.pid
+    splunk: ProcessId
+  process.parent.name:
+    sysmon: ParentImage
+    windows_security: ParentProcessName
+    elastic: process.parent.name
+    splunk: ParentImage
+  user.name:
+    sysmon: User
+    windows_security: SubjectUserName
+    elastic: user.name
+    splunk: User
+  network.dst.ip:
+    sysmon: DestinationIp
+    zeek: id.resp_h
+    suricata: dest_ip
+    elastic: destination.ip
+    splunk: dest_ip
+  network.dst.port:
+    sysmon: DestinationPort
+    zeek: id.resp_p
+    suricata: dest_port
+    elastic: destination.port
+    splunk: dest_port
+  file.path:
+    sysmon: TargetFilename
+    elastic: file.path
+    splunk: TargetFilename
+  registry.key:
+    sysmon: TargetObject
+    elastic: registry.path
+    splunk: TargetObject
